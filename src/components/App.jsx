@@ -1,22 +1,29 @@
-import React,{useEffect,useState,useRef} from "react";
+import React,{useReducer} from "react";
+
+
+//use Reducer Hook in React JS 
+//useReducer is a hook that is used for state management in React. It is an alternative to useState. So useState is built using useReducer.
 
 export default function App() {
-  const [name,setName] = useState("");
-  const count=useRef(0);
+  const initialState = {count:0};
 
-  const changeName=(e)=>{
-    setName(e.target.value);
+  const reducer=(state,action)=>{
+    switch(action.type){
+      case 'INCREMENT':
+        return {count:state.count+1};
+      case 'DECREMENT':
+        return {count:state.count-1};
+      default:
+        return state;
+    }
   }
+  const [state,dispatch] = useReducer(reducer,initialState);
 
-  useEffect(()=>{
-    count.current=count.current+1;
-  });
   return (
     <div>
-      <h1>App</h1>
-      <input type="text" onChange={changeName}/>
-      <h2>Name :{name}</h2>
-      <h2>Renders :{count.current}</h2>
+      <h1>{state.count}</h1>
+      <button onClick={()=>dispatch({type:'INCREMENT'})}>Increment</button>
+      <button onClick={()=>dispatch({type:'DECREMENT'})}>Decrement</button>
     </div>
   )
 }
